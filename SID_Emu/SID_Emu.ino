@@ -1,4 +1,4 @@
-// SID chip emulator with reverb - original code https://github.com/cybernesto/sid-arduino-lib
+// SID chip emulator with reverb //
 
 #include "FspTimer.h"
 #include "SID.h"
@@ -21,13 +21,13 @@ const int REVERB_DECAY = (int)(FIXED_SCALE * 0.7f);
 
 int16_t reverbAddr;
 int reverbBuffer[REVERB_SIZE];
-int16_t sample;
+
 
 void timer_callback(timer_callback_args_t __attribute((unused)) *p_args) {
 
   static uint8_t mscounter = 0;
 
-  sample = mySid.waveforms();
+  int16_t sample = mySid.waveforms();
 
   int reverb = ((int)reverbBuffer[reverbAddr] * REVERB_DECAY) >> FIXED_BITS;
   reverb += sample;
@@ -77,15 +77,6 @@ bool beginTimer(float rate) {
 
 }
 
-void setup() {
-
-  analogWriteResolution(12);
-  beginTimer(SAMPLERATE);
-  
-  mySid.begin();
-
-}
-
 void setwaveform_triangle(uint8_t channel) {
 
   uint8_t dataset[]={ SETTRIANGLE_1 C4_1 0xFF };
@@ -123,6 +114,15 @@ uint8_t regproc() {
 	}
 	
 	return (start);
+
+}
+
+void setup() {
+
+  analogWriteResolution(12);
+  beginTimer(SAMPLERATE);
+  
+  mySid.begin();
 
 }
 
