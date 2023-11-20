@@ -1,9 +1,11 @@
-// PÚCA_DSP - M16 DSP phase modulation //
+// M16 DSP - phase modulation example //
 // https://github.com/algomusic/M16 //
 
 #include "FspTimer.h"
 #include "M16.h"
 #include "Osc.h"
+
+FspTimer audio_timer;
 
 #define SAMPLE_RATE   22050
 #define BPM           120
@@ -14,8 +16,6 @@ Osc aOsc1(sineTable);
 Osc aOsc2(sineTable);
 
 float modIndex, ratio;
-
-FspTimer audio_timer;
 
 void timer_callback(timer_callback_args_t __attribute((unused)) *p_args) {
 
