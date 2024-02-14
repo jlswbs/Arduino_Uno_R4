@@ -14,9 +14,8 @@ class Synth {
 public:
 
   bool trig = 0;
-  bool noise = 0;
+  int noise = 0;
   int wave = 0;
-  int h = 0;
   int i = 0;
   float k = 1;
   float vol = 0.0f;
@@ -33,21 +32,21 @@ public:
 int Synth::calculate() {
 
   if (trig == 1) {
-    h = 0;
     i = 0;
     k = 1.0f;
   }
 
   if (i > 179) {
 
-    h ++;
     i = 0;
     k =  k * (94 - (32 - decay)) / 100 - 10 / 100;
 
   }
 
-  if (noise) wave = fand[rand()%180] * 32 + harmo[i] * (32 - harm);
-  else wave = fand[i] * 32 + harmo[i] * (32 - harm);
+  if (noise == 0) wave = fand[i] * 64 + harmo[i] * (64 - harm);
+  if (noise == 1) wave = (fand[i] * 64 * harmo[i] * (64 - harm)) >> 13;
+  if (noise == 2) wave = (fand[rand()%180] * 64 + harmo[i] * (64 - harm)) >> 2;
+  
 
   i ++;
 
@@ -106,10 +105,10 @@ void setup() {
 void loop() {
 
   kick.trig = 1;
-  kick.noise = rand()%2;
+  kick.noise = rand()%3;
   kick.vol = randomf(0.4f, 0.9f);
   kick.decay = random(8, 32);
-  kick.harm = random(0, 31);
+  kick.harm = random(1, 63);
  
   delay(1);
 
